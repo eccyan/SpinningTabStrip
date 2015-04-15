@@ -1,0 +1,159 @@
+apply plugin: 'idea'
+apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
+
+def localProperty(name) {
+    final Properties props = new Properties()
+    final file = project.rootProject.file('local.properties')
+    if (file.exists()) {
+        props.load(file.newDataInputStream())
+    }
+
+    return props.getProperty(name.toString())
+}
+
+def bintrayUser() {
+    return localProperty("bintrayUser") ?: bintrayUser ?: "";
+}
+
+def bintrayApiKey() {
+    return localProperty("bintrayApiKey") ?: bintrayApiKey ?: "";
+}
+
+def gpgPassphrase() {
+    return localProperty("gpgPassphrase") ?: gpgPassphrase ?: "";
+}
+
+
+final GIT_SHA = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
+final BUILD_TIME = new Date().format("yyyy-MM-dd'T'HH:mm'Z'", TimeZone.getTimeZone("UTC"))
+final VERSION_CODE = 1
+final VERSION_NAME = '1.0.0'
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion '22.0.1'
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 22
+
+        versionCode VERSION_CODE as int
+        versionName VERSION_NAME
+
+        buildConfigField "String", "GIT_SHA", "\"${GIT_SHA}\""
+        buildConfigField "String", "BUILD_TIME", "\"${BUILD_TIME}\""
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+    lintOptions {
+        abortOnError false
+    }
+}
+
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
+
+dependencies {
+    compile 'com.android.support:support-v4:22.0.0'
+    testCompile 'junit:junit:4.11'
+}
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+// add javadoc/source jar tasks as artifacts
+artifacts {
+    archives sourcesJar, javadocJar
+}
+
+repositories {
+    jcenter()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId pkgGroup
+            version pkgVersion
+            artifactId pkgArtifactId
+            artifact sourcesJar
+            artifact javadocJar
+            pom.withXml {
+                final Node root = asNode()
+                root.appendNode('name', "${pkgGroup}:${pkgArtifactId}")
+                root.appendNode('description', pkgDesc)
+                root.appendNode('url', pkgSiteUrl)
+
+                final developer = root.appendNode('developers').appendNode('developer')
+                developer.appendNode('id', 'eccyan')
+                developer.appendNode('name', 'Daisuke Sato')
+                developer.appendNode('email', 'g00.eccyan@gmail.com')
+                developer.appendNode('url', 'https://twitter.com/eccyan')
+                developer.appendNode('timezone', '+9')
+
+                final issues = root.appendNode('issueManagement')
+                issues.appendNode('system', 'Github Issues')
+                issues.appendNode('url', "${pkgSiteUrl}/issues")
+
+                final scm = root.appendNode('scm')
+                scm.appendNode('url', pkgSiteUrl)
+                scm.appendNode('connection', "scm:git:git://github.com/eccyan/${pkgName}.git")
+                scm.appendNode('developerConnection', "scm:git:ssh://github.com/eccyan/${pkgName}.git")
+
+                def license = root.appendNode('licenses').appendNode('license')
+                license.appendNode('name', 'Apache 2.0')
+                license.appendNode('url', 'http://www.apache.org/licenses/LICENSE-2.0.txt')
+            }
+        }
+    }
+}
+
+bintray {
+    user = bintrayUser()
+    key = bintrayApiKey()
+
+    publications = ['mavenJava'] //When uploading Maven-based publication files
+    dryRun = false //Whether to run this as dry-run, without deploying
+    publish = false //If version should be auto published after an upload
+    pkg {
+        repo = 'maven'
+        name = pkgName
+        desc = pkgDesc
+        websiteUrl = pkgSiteUrl
+        issueTrackerUrl = "${pkgSiteUrl}/issues"
+        vcsUrl = "${pkgSiteUrl}.git"
+        licenses = ['Apache-2.0']
+        labels = ['tabstrip', 'viewpager', 'infinite', 'loop']
+        publicDownloadNumbers = true
+        version {
+            name = pkgVersion
+            vcsTag = pkgVersion
+            gpg {
+                sign = true //Determines whether to GPG sign the files. The default is false
+                passphrase = gpgPassphrase()
+            }
+        }
+    }
+}

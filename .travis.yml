@@ -1,0 +1,13 @@
+language: java
+
+# Turning off caching to avoid caching Issues
+# cache: false
+# Using the new Container-Based Infrastructure
+sudo: false
+
+before_install:
+    # Making sure gradlew has executable permissions
+    - chmod +x gradlew
+
+script:
+    ./gradlew optional:clean optional:check
