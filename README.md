@@ -15,8 +15,7 @@ Download [the latest JAR](https://search.maven.org/remote_content?g=com.eccyan&a
 ### Gradle
 ```groovy
 repositories {
-    maven { url 'https://dl.bintray.com/eccyan/maven' }
-    // not yet jcenter()
+    jcenter()
 }
 
 dependencies {
