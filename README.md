@@ -8,12 +8,15 @@ Moreover, **YOU CAN SPIN** that tab !
 
 ## Install
 
+[](
 Download [the latest JAR](https://search.maven.org/remote_content?g=com.eccyan&a=spinning&v=LATEST) or grab via Gradle:
+)
 
 ### Gradle
 ```groovy
 repositories {
-    jcenter()
+    maven { url 'https://dl.bintray.com/eccyan/maven' }
+    // not yet jcenter()
 }
 
 dependencies {
