@@ -4,6 +4,8 @@ SpinningTabStrip & SpinningViewPager
 SpinningTabStrip & SpinningViewPager are android extensions allowing infinite scrolling.
 Moreover, **YOU CAN SPIN** that tab !
 
+![Preview Image](https://raw.githubusercontent.com/eccyan/SpinningTabStrip/master/spinning-view-pager.gif)
+
 ## Install
 
 Download [the latest JAR](https://search.maven.org/remote_content?g=com.eccyan&a=spinning&v=LATEST) or grab via Gradle:
