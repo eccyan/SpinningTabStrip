@@ -21,7 +21,7 @@ dependencies {
 }
 ```
 
-Modifications By
+Modified By
 -------
 Daisuke Sato([eccyan](https://twitter.com/eccyan)) - <g00.eccyan@gmail.com>
 
