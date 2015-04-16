@@ -20,7 +20,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.eccyan:spinning:0.0.1'
+    compile 'com.eccyan:spinning:0.0.1@aar'
 }
 ```
 
