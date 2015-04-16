@@ -100,6 +100,7 @@ publishing {
             artifactId pkgArtifactId
             artifact sourcesJar
             artifact javadocJar
+            artifact source: file("${project.buildDir}/outputs/aar/${project.name}-release.aar")
             pom.withXml {
                 final Node root = asNode()
                 root.appendNode('name', "${pkgGroup}:${pkgArtifactId}")
