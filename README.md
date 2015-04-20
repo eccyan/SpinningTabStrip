@@ -1,6 +1,8 @@
 SpinningTabStrip & SpinningViewPager
 ======================
 
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-SpinningTabStrip-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/1721)
+
 SpinningTabStrip & SpinningViewPager are android extensions allowing infinite scrolling.
 
 Moreover, **YOU CAN SPIN** that tab !
