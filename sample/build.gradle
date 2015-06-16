@@ -36,7 +36,7 @@ android {
 }
 dependencies {
     compile project(':spinning')
-//    compile 'com.eccyan:spinning:0.0.1@aar'
+//    compile 'com.eccyan:spinning:0.0.2@aar'
 
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.android.support:appcompat-v7:22.2.0'
