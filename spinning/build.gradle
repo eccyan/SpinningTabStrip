@@ -64,7 +64,7 @@ idea {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:22.0.0'
+    compile 'com.android.support:support-v4:22.2.0'
     testCompile 'junit:junit:4.11'
 }
 
