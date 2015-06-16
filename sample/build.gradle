@@ -5,8 +5,8 @@ repositories {
 apply plugin: 'idea'
 apply plugin: 'com.android.application'
 
-final VERSION_CODE = 1
-final VERSION_NAME = '1.0.0'
+final VERSION_CODE = 2
+final VERSION_NAME = '1.0.1'
 
 
 

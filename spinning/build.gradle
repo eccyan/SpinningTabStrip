@@ -28,8 +28,8 @@ def gpgPassphrase() {
 
 final GIT_SHA = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
 final BUILD_TIME = new Date().format("yyyy-MM-dd'T'HH:mm'Z'", TimeZone.getTimeZone("UTC"))
-final VERSION_CODE = 1
-final VERSION_NAME = '1.0.0'
+final VERSION_CODE = 2
+final VERSION_NAME = '1.0.1'
 
 android {
     compileSdkVersion 22
